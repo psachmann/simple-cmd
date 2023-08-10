@@ -116,6 +116,44 @@ class DirCommandTest extends AbstractCommandTest {
     assertFalse(actual.contains(expected), "Expected : " + expected + " But was: " + actual);
   }
 
+  /**
+   * Testet den "dir" Befehl mit vorgegebener Sortierung: vorwärts.
+   */
+  @Test
+  void testDirWithSAsc(@TempDir Path tempDir) throws IOException {
+
+    // given
+    prepareTestFolder(tempDir);
+    SimpleCmd.setCurrentLocation(tempDir.toFile());
+    String[] args = { "-s", "asc" };
+    DirCommand dirCommand = CommandLine.populateCommand(new DirCommand(), args);
+    // when
+    dirCommand.run();
+    // then
+    String actual = getOutputStream().toString();
+    assertTrue(actual.indexOf("folder1") < actual.indexOf("myFile.txt"));
+    assertFalse(actual.indexOf("folder1") > actual.indexOf("myFile.txt"));
+  }
+
+  /**
+   * Testet den "dir" Befehl mit vorgegebener Sortierung: abwärts.
+   */
+  @Test
+  void testDirWithSDesc(@TempDir Path tempDir) throws IOException {
+
+    // given
+    prepareTestFolder(tempDir);
+    SimpleCmd.setCurrentLocation(tempDir.toFile());
+    String[] args = { "-s", "desc" };
+    DirCommand dirCommand = CommandLine.populateCommand(new DirCommand(), args);
+    // when
+    dirCommand.run();
+    // then
+    String actual = getOutputStream().toString();
+    assertTrue(actual.indexOf("folder1") > actual.indexOf("myFile.txt"));
+    assertFalse(actual.indexOf("folder1") < actual.indexOf("myFile.txt"));
+  }
+
   private void prepareTestFolder(@TempDir Path tempDir) throws IOException {
 
     // for other possible usages of @TempDir see https://www.baeldung.com/junit-5-temporary-directory
