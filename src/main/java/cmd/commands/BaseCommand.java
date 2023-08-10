@@ -2,9 +2,11 @@ package cmd.commands;
 
 import cmd.commands.cd.CdCommand;
 import cmd.commands.copy.CopyCommand;
+import cmd.commands.date.DateCommand;
 import cmd.commands.del.DelCommand;
 import cmd.commands.dir.DirCommand;
 import cmd.commands.find.FindCommand;
+import cmd.commands.hash.HashCommand;
 import cmd.commands.mkdir.MkdirCommand;
 import cmd.commands.move.MoveCommand;
 import cmd.commands.time.TimeCommand;
@@ -25,7 +27,7 @@ import picocli.CommandLine.Command;
         description = "base command",
         mixinStandardHelpOptions = true,
         subcommands = {DirCommand.class, DelCommand.class, CopyCommand.class, MoveCommand.class,
-                        MkdirCommand.class, CdCommand.class, FindCommand.class, TimeCommand.class})
+                        MkdirCommand.class, CdCommand.class, FindCommand.class, TimeCommand.class, DateCommand.class, HashCommand.class})
 
 public class BaseCommand implements Runnable {
     public BaseCommand() {

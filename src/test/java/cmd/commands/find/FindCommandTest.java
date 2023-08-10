@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,24 @@ public class FindCommandTest extends AbstractCommandTest {
     assertFalse(expected);
   }
 
+  @Test
+  void testCorrectFileSizeCalculated(@TempDir Path tempDir) throws IOException{
+
+    //given
+    createFileWithSpecificSize(tempDir);
+    SimpleCmd.setCurrentLocation(tempDir.toFile());
+    String[] args = {"txt"};
+    FindCommand findCommand = CommandLine.populateCommand(new FindCommand(),args);
+    String fileSizeAsStringInMegaBytes = "1 MB";
+    //when
+    findCommand.run();
+    //then
+    String actualString = getOutputStream().toString();
+
+    assertTrue(actualString.contains(fileSizeAsStringInMegaBytes));
+
+  }
+
 
     private void prepareTestFiles(@TempDir Path tempDir) throws IOException {
     int amountFiles = 10;
@@ -71,5 +90,14 @@ public class FindCommandTest extends AbstractCommandTest {
       Files.write(myFile, Collections.singletonList(""));
     }
   }
+
+  private void createFileWithSpecificSize(@TempDir Path tempDir) throws IOException {
+    Path myFile = tempDir.resolve("myFile.txt");
+    Files.write(myFile, Collections.singletonList(""));
+    long desiredSizeInBytes = 1024 * 1024; // 1 MB
+    // Resize the temporary file to the desired size
+    Files.write(myFile, new byte[(int) desiredSizeInBytes], StandardOpenOption.TRUNCATE_EXISTING);
+  }
+
 
 }
