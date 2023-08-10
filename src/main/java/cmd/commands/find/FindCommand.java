@@ -39,12 +39,7 @@ public class FindCommand implements Runnable{
     File directory = SimpleCmd.getCurrentLocation();
     System.out.println();
     //search files
-    File[] foundFiles = directory.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isFile() && file.getName().endsWith("." + fileExtension);
-      }
-    });
+    File[] foundFiles = directory.listFiles(file -> file.isFile() && file.getName().endsWith("." + fileExtension));
 
     if(foundFiles != null && foundFiles.length > 0) {
       //Print files to standard output
@@ -53,7 +48,7 @@ public class FindCommand implements Runnable{
       }
     }
     else {
-      System.err.println("No files found in the current directory!");
+      LOG.warn("No files found in the current directory!");
     }
   }
 }
