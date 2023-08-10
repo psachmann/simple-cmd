@@ -84,14 +84,13 @@ public class DirCommand implements Runnable {
     }
 
     private Comparator<String> getSortOrderAwareFileNameComparator(final String sortOrder) {
-
-        if ("desc".equals(sortOrder)) {
-            return String::compareTo;
-        } else if ("asc".equals(sortOrder)) {
-            return Comparator.reverseOrder();
-        } else {
-            return (fileName1, fileName2) -> 0;
-        }
+      if ("desc".equals(sortOrder)) {
+        return Comparator.reverseOrder();
+      } else if ("asc".equals(sortOrder)) {
+        return String::compareTo;
+      } else {
+        return (fileName1, fileName2) -> 0;
+      }
     }
 
     private Comparator<File> getFileListComparator() {
